@@ -1,0 +1,12 @@
+
+{
+  "type": "evolving_matter:dundim",
+  "generator": {
+    "type": "evolving_matter:dundimchunk",
+    "settings": {
+      "base": 65,
+      "verticalvariance": 16,
+      "horizontalvariance": 10
+    }
+  }
+}
