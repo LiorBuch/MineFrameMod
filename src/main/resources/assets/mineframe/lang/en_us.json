@@ -1,34 +1,6 @@
 {
-  "item.evolving_matter.soul_stone": "Soul Stone",
-  "item.evolving_matter.soul_stone_small_bundle": "Small Bundle Of SoulStones",
-  "item.evolving_matter.soul_stone_medium_bundle": "Medium Bundle Of SoulStones",
-  "item.evolving_matter.soul_stone_large_bundle": "Large Bundle Of SoulStones",
-  "item.evolving_matter.staff_of_arrows": "Staff Of Arrows",
-  "item.evolving_matter.staff_of_arrows_b": "\u00A7e Staff Of Arrows",
-  "item.evolving_matter.staff_of_arrows_e": "\u00A7b Staff Of Arrows",
-  "item.evolving_matter.staff_of_poison": "Staff Of Poison",
-  "item.evolving_matter.staff_of_poison_b": "\u00A7e Staff Of Poison",
-  "item.evolving_matter.staff_of_poison_e": "\u00A7b Staff Of Poison",
-  "item.evolving_matter.heart_of_luck": "Heart Of Luck",
-  "item.evolving_matter.heart_of_mobs": "Heart Of Mobs",
-  "item.evolving_matter.soul_stone_shard": "Soul Stone Shard",
-  "entity.evolving_matter.soul_ghost": "Soul Ghost",
-  "entity.evolving_matter.fiend": "Fiend",
-  "item.evolving_matter.soul_ghost_spawn_egg": "Soul Ghost Spawn Egg",
-  "item.evolving_matter.fade_apple": "Fade Apple",
-  "item.evolving_matter.fade_apple_small_bundle": "Small Bundle Of Fade Apples",
-  "item.evolving_matter.fade_apple_medium_bundle": "Medium Bundle Of Fade Apples",
-  "item.evolving_matter.fade_apple_large_bundle": "Large Bundle Of Fade Apples",
-  "block.evolving_matter.soul_stone_ore": "Soul Stone Ore",
-  "block.evolving_matter.soul_stone_ore_deepslate": "Soul Stone Ore Deepslate",
-  "screen.evolving_matter.evolution_stand": "Evolution Stand",
-
-  "key.evolving_matter.ability_key": "Ability Key",
-
-  "effect.evolving_matter.zen_corrosive_effect": "Corrosive",
+  "item.mineframe.clip_crossbow": "4 Clip Crossbow",
+  "item.mineframe.plastics": "Plastics"
 
 
-
-  "tooltip.evolving_matter.dagger_of_noob.hold_shift": "Hold\u00A7e LEFT SHIFT \u00A7f for more information",
-  "tooltip.zen_health.hp": "Zen Health Point [%s/%s]"
 }
