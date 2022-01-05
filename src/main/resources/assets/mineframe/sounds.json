@@ -1,0 +1,12 @@
+{
+  "item.clip_crossbow.ambient": {
+    "sounds": [
+      "mineframe:autoloader"
+    ]
+  },
+  "item.clip_crossbow_reload.ambient": {
+    "sounds": [
+      "mineframe:reload"
+    ]
+  }
+}

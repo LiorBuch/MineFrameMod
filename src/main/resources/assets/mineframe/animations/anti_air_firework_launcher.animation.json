@@ -1,0 +1,61 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.anti_air_firework_launcher.reload": {
+			"animation_length": 5.52,
+			"bones": {
+				"body": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.56": {
+							"vector": [62.5, 0, 0]
+						},
+						"3.96": {
+							"vector": [62.5, 0, 0]
+						},
+						"5.52": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"loading_hatch": {
+					"position": {
+						"1.56": {
+							"vector": [0, 0, 0]
+						},
+						"1.96": {
+							"vector": [0, 0, -5]
+						},
+						"3.44": {
+							"vector": [0, 0, -5]
+						},
+						"3.84": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"firwork": {
+					"position": {
+						"1.96": {
+							"vector": [0, 0, 0]
+						},
+						"2.0": {
+							"vector": [7, -4, 0]
+						},
+						"2.48": {
+							"vector": [5.79, -0.34, 0]
+						},
+						"2.8": {
+							"vector": [3.39, 0.5, 0]
+						},
+						"3.24": {
+							"vector": [1, 0.5, 0]
+						}
+					}
+				}
+			}
+		}
+	}
+}

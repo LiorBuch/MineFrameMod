@@ -27,7 +27,7 @@ import static top.theillusivec4.curios.api.CuriosApi.MODID;
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("mineframe")
 public class MineFrame {
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
     public static final String MODID = "mineframe";
 
     public MineFrame() {

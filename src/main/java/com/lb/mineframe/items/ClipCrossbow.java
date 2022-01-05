@@ -1,6 +1,7 @@
 package com.lb.mineframe.items;
 
 import com.lb.mineframe.renderers.ClipCrossbowRenderer;
+import com.lb.mineframe.setups.Registrations;
 import com.lb.mineframe.utils.KeyMaps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -33,6 +34,7 @@ import software.bernie.geckolib3.network.GeckoLibNetwork;
 import software.bernie.geckolib3.network.ISyncable;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class ClipCrossbow extends Item implements IAnimatable, ISyncable {
@@ -67,15 +69,16 @@ public class ClipCrossbow extends Item implements IAnimatable, ISyncable {
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
         Player player = (Player) pEntity;
-        if (KeyMaps.reload_key.isDown() && !pLevel.isClientSide&&!player.getCooldowns().isOnCooldown(this)) {
-            player.getCooldowns().addCooldown(this,160);
+        if (KeyMaps.reload_key.isDown() && !pLevel.isClientSide && !player.getCooldowns().isOnCooldown(this)) {
+            player.getCooldowns().addCooldown(this, 160);
+            pLevel.playSound(null, player.getX(), player.getY(), player.getZ(), Registrations.RELOAD_SOUND.get(), SoundSource.PLAYERS, 0.5F, 1F);
             final int id = GeckoLibUtil.guaranteeIDForStack(pStack, (ServerLevel) pLevel); //specify ID for the item.
             final PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> pEntity);
             GeckoLibNetwork.syncAnimation(target, this, id, animationReloadState);
             CompoundTag itemTag = pStack.getOrCreateTag();
-            CompoundTag itemParaTag = pStack.getOrCreateTagElement("item_para");
-            itemParaTag.putInt("ammo_in_clip", 4);
-            itemTag.put("item_para", itemParaTag);
+            CompoundTag itemParaTag = pStack.getOrCreateTagElement("item_meta");
+            itemParaTag.putInt("ammo_in_clip", 6);
+            itemTag.put("item_meta", itemParaTag);
         }
     }
 
@@ -83,13 +86,16 @@ public class ClipCrossbow extends Item implements IAnimatable, ISyncable {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         CompoundTag itemTag = this.getOrCreateItemTag(itemStack);
-        CompoundTag itemParaTag = itemStack.getOrCreateTagElement("item_para");
+        CompoundTag itemParaTag = itemStack.getOrCreateTagElement("item_meta");
         int arrowsInClip = itemParaTag.getInt("ammo_in_clip");
         if (!pLevel.isClientSide) {
-            final ItemStack stack = pPlayer.getItemInHand(pUsedHand);
-            final int id = GeckoLibUtil.guaranteeIDForStack(stack, (ServerLevel) pLevel); //specify ID for the item.
             if (arrowsInClip != 0) {
-                pPlayer.getCooldowns().addCooldown(this, 33);
+                if (arrowsInClip > 1) {
+                    pLevel.playSound(null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), Registrations.AUTOLOADER_SOUND.get(), SoundSource.PLAYERS, 0.5F, 1F);
+                }
+                final ItemStack stack = pPlayer.getItemInHand(pUsedHand);
+                final int id = GeckoLibUtil.guaranteeIDForStack(stack, (ServerLevel) pLevel); //specify ID for the item.
+                pPlayer.getCooldowns().addCooldown(this, 25);
                 //this starts the animation
                 final PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> pPlayer);
                 GeckoLibNetwork.syncAnimation(target, this, id, animationShotState);
@@ -99,10 +105,10 @@ public class ClipCrossbow extends Item implements IAnimatable, ISyncable {
                 arrow.shotFromCrossbow();
                 arrow.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, 3.0F, 0.0F);
                 pLevel.addFreshEntity(arrow);
-                pLevel.playSound((Player) null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, 1F);
+                pLevel.playSound(null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, 1F);
                 arrowsInClip--;
                 itemParaTag.putInt("ammo_in_clip", arrowsInClip);
-                itemTag.put("item_para", itemParaTag);
+                itemTag.put("item_meta", itemParaTag);
             } else {
                 pLevel.playSound(null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.AMBIENT, 1F, 1F);
                 pPlayer.displayClientMessage(new TextComponent("Clip Is Empty"), true);
@@ -117,9 +123,9 @@ public class ClipCrossbow extends Item implements IAnimatable, ISyncable {
             return itemStack.getTag();
         }
         CompoundTag itemTag = itemStack.getOrCreateTag();
-        CompoundTag itemParaTag = itemStack.getOrCreateTagElement("item_para");
-        itemParaTag.putInt("ammo_in_clip", 4);
-        itemTag.put("item_para", itemParaTag);
+        CompoundTag itemParaTag = itemStack.getOrCreateTagElement("item_meta");
+        itemParaTag.putInt("ammo_in_clip", 0);
+        itemTag.put("item_meta", itemParaTag);
         return itemTag;
     }
 

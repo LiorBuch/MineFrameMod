@@ -41,7 +41,7 @@
 			}
 		},
 		"animation.clip_crossbow.shoot": {
-			"animation_length": 1.56,
+			"animation_length": 1.2,
 			"bones": {
 				"arrow_shot": {
 					"position": {
@@ -55,10 +55,10 @@
 							"vector": [0, -2, 0],
 							"easing": "easeOutExpo"
 						},
-						"1.32": {
+						"0.98": {
 							"vector": [0, -2, 0]
 						},
-						"1.56": {
+						"1.2": {
 							"vector": [0, 0, 0]
 						}
 					}
@@ -71,7 +71,7 @@
 						"0.08": {
 							"vector": [0, 0, -8]
 						},
-						"1.32": {
+						"0.96": {
 							"vector": [0, 0, 0],
 							"easing": "easeOutCubic"
 						}

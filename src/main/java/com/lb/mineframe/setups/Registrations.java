@@ -1,10 +1,12 @@
 package com.lb.mineframe.setups;
 
+import com.lb.mineframe.items.AntiAirFireworkLauncher;
 import com.lb.mineframe.items.ClipCrossbow;
 import com.lb.mineframe.utils.KeyMaps;
 import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -31,16 +33,23 @@ public class Registrations {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         BLOCKS.register(bus);
         KeyMaps.init();
+        SOUNDS.register(bus);
 
         ITEMS.register(bus);
-
     }
 
     //******************************ITEMS******************************
     public static final RegistryObject<Item> PLASTICS = ITEMS.register("plastics", () -> new Item(new Item.Properties().tab(MINEFRAME_CREATIVE_TAB)));
     public static final RegistryObject<ClipCrossbow> CLIP_CROSSBOW = ITEMS.register("clip_crossbow",()-> new ClipCrossbow(new Item.Properties().tab(MINEFRAME_CREATIVE_TAB)));
+    public static final RegistryObject<AntiAirFireworkLauncher> ANTI_AIR_FIREWORK_LAUNCHER = ITEMS.register("anti_air_firework_launcher",()-> new AntiAirFireworkLauncher(new Item.Properties().tab(MINEFRAME_CREATIVE_TAB)));
 
     //******************************BLOCKS******************************
+
+    //******************************SOUNDS******************************
+    public static final RegistryObject<SoundEvent> AUTOLOADER_SOUND = SOUNDS.register("clip_crossbow_autoloader",
+            ()-> new SoundEvent(new ResourceLocation(MODID,"item.clip_crossbow.ambient")));
+    public static final RegistryObject<SoundEvent> RELOAD_SOUND = SOUNDS.register("clip_crossbow_reload",
+            ()-> new SoundEvent(new ResourceLocation(MODID,"item.clip_crossbow_reload.ambient")));
 
     // ******************************Entities******************************
 
