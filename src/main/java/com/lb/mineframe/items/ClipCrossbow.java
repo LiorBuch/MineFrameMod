@@ -69,7 +69,7 @@ public class ClipCrossbow extends Item implements IAnimatable, ISyncable {
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
         Player player = (Player) pEntity;
-        if (KeyMaps.reload_key.isDown() && !pLevel.isClientSide && !player.getCooldowns().isOnCooldown(this)) {
+        if (KeyMaps.reload_key.isDown() && !pLevel.isClientSide && !player.getCooldowns().isOnCooldown(this)&&pIsSelected) {
             player.getCooldowns().addCooldown(this, 160);
             pLevel.playSound(null, player.getX(), player.getY(), player.getZ(), Registrations.RELOAD_SOUND.get(), SoundSource.PLAYERS, 0.5F, 1F);
             final int id = GeckoLibUtil.guaranteeIDForStack(pStack, (ServerLevel) pLevel); //specify ID for the item.
@@ -128,12 +128,6 @@ public class ClipCrossbow extends Item implements IAnimatable, ISyncable {
         itemTag.put("item_meta", itemParaTag);
         return itemTag;
     }
-
-    @Override
-    public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
-        return false;
-    }
-
 
     //ANIMATION CONTROLLING
 

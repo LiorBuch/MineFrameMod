@@ -1,6 +1,8 @@
 package com.lb.mineframe.setups;
 
+import com.lb.mineframe.effects.HeavyWeight;
 import com.lb.mineframe.items.AntiAirFireworkLauncher;
+import com.lb.mineframe.items.Chainsaw;
 import com.lb.mineframe.items.ClipCrossbow;
 import com.lb.mineframe.utils.KeyMaps;
 import net.minecraft.client.ParticleStatus;
@@ -8,8 +10,12 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -27,6 +33,8 @@ public class Registrations {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES,MODID);
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS,MODID);
+    public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, MODID);
+    public static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(ForgeRegistries.POTIONS, MODID);
 
 
     public static void init() {
@@ -34,6 +42,8 @@ public class Registrations {
         BLOCKS.register(bus);
         KeyMaps.init();
         SOUNDS.register(bus);
+        EFFECTS.register(bus);
+        POTIONS.register(bus);
 
         ITEMS.register(bus);
     }
@@ -42,8 +52,13 @@ public class Registrations {
     public static final RegistryObject<Item> PLASTICS = ITEMS.register("plastics", () -> new Item(new Item.Properties().tab(MINEFRAME_CREATIVE_TAB)));
     public static final RegistryObject<ClipCrossbow> CLIP_CROSSBOW = ITEMS.register("clip_crossbow",()-> new ClipCrossbow(new Item.Properties().tab(MINEFRAME_CREATIVE_TAB)));
     public static final RegistryObject<AntiAirFireworkLauncher> ANTI_AIR_FIREWORK_LAUNCHER = ITEMS.register("anti_air_firework_launcher",()-> new AntiAirFireworkLauncher(new Item.Properties().tab(MINEFRAME_CREATIVE_TAB)));
+    public static final RegistryObject<Chainsaw> CHAINSAW = ITEMS.register("chainsaw",()-> new Chainsaw(Tiers.NETHERITE,1F,10F,new Item.Properties().tab(MINEFRAME_CREATIVE_TAB)));
 
     //******************************BLOCKS******************************
+
+    //******************************EFFECTS******************************
+    public static final RegistryObject<MobEffect> HEAVY_WEIGHT = EFFECTS.register("zen_poison_effect", () -> new HeavyWeight(MobEffectCategory.HARMFUL,0x0d8c2d));
+
 
     //******************************SOUNDS******************************
     public static final RegistryObject<SoundEvent> AUTOLOADER_SOUND = SOUNDS.register("clip_crossbow_autoloader",

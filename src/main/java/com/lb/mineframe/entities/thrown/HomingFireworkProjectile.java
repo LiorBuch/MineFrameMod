@@ -1,9 +1,16 @@
 package com.lb.mineframe.entities.thrown;
 
+import com.lb.mineframe.setups.Registrations;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.FlyingMob;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class HomingFireworkProjectile extends FireworkRocketEntity {
@@ -20,18 +27,21 @@ public class HomingFireworkProjectile extends FireworkRocketEntity {
         Vec3 projectileVector = getPosition(1F);
         Vec3 newMovementVector;
         Vec3 targetVector;
+
         var trackedEntity = this.level.getEntity(targetID);
         if (trackedEntity != null) {
             targetVector = trackedEntity.getPosition(1F);
             newMovementVector=(targetVector.subtract(projectileVector)).normalize();
             this.setDeltaMovement(newMovementVector);
+            float newPitch= (float) Math.atan(newMovementVector.x/(-newMovementVector.y));
+            float newYaw = (float) (Math.sqrt((newMovementVector.x*newMovementVector.x)+(newMovementVector.y*newMovementVector.y))/newMovementVector.z);
+            this.setRot(newYaw,newPitch);
         }
         else {
             this.discard();
         }
 
     }
-
     @Override
     public void setNoGravity(boolean pNoGravity) {
         super.setNoGravity(pNoGravity);

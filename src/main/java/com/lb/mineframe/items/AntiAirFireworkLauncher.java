@@ -81,7 +81,7 @@ public class AntiAirFireworkLauncher extends Item implements IAnimatable, ISynca
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
         Player player = (Player) pEntity;
-        if (KeyMaps.reload_key.isDown() && !pLevel.isClientSide && !player.getCooldowns().isOnCooldown(this)) {
+        if (KeyMaps.reload_key.isDown() && !pLevel.isClientSide && !player.getCooldowns().isOnCooldown(this)&&pIsSelected) {
             player.getCooldowns().addCooldown(this, 111);
             final int id = GeckoLibUtil.guaranteeIDForStack(pStack, (ServerLevel) pLevel); //specify ID for the item.
             final PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> pEntity);
@@ -92,10 +92,8 @@ public class AntiAirFireworkLauncher extends Item implements IAnimatable, ISynca
     @Override
     public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
         super.releaseUsing(pStack, pLevel, pLivingEntity, pTimeCharged);
-        MineFrame.LOGGER.info("Released ====================");
         CompoundTag itemParaTag = pStack.getOrCreateTagElement("item_meta");
         int targetID = itemParaTag.getInt("target_id");
-        MineFrame.LOGGER.info("this is the targets ID: ==========" + targetID + "******" + pLevel.getEntity(targetID));
         Entity entity = pLevel.getEntity(targetID);
         if (entity != null) {
             HomingFireworkProjectile homingFireworkProjectile = new HomingFireworkProjectile(pLevel,pLivingEntity.getX(), pLivingEntity.getY()+0.4, pLivingEntity.getZ(), createFireworkRocket(),targetID);
@@ -147,6 +145,7 @@ public class AntiAirFireworkLauncher extends Item implements IAnimatable, ISynca
         CompoundTag itemTag = this.getOrCreateItemTag(itemStack);
         CompoundTag itemParaTag = itemStack.getOrCreateTagElement("item_meta");
         int targetID = itemParaTag.getInt("target_id");
+
         //search for entity
         float pPartialTicks = 1;
         double rayLength = 5000;
@@ -168,7 +167,6 @@ public class AntiAirFireworkLauncher extends Item implements IAnimatable, ISynca
                     itemParaTag.putInt("target_id", targetID);
                     itemTag.put("item_meta", itemParaTag);
                     pLevel.playSound(null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.AMBIENT, 1F, 1F);
-                    MineFrame.LOGGER.info("*******************" + targetID);
                 }
             }
         }
