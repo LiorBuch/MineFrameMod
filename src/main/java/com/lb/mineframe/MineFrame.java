@@ -1,13 +1,11 @@
 package com.lb.mineframe;
 
 import com.lb.mineframe.setups.Registrations;
+import com.lb.mineframe.world.gen.ModBiomeGen;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
@@ -20,15 +18,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
 
-import java.util.stream.Collectors;
-
-import static top.theillusivec4.curios.api.CuriosApi.MODID;
-
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("mineframe")
 public class MineFrame {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MODID = "mineframe";
+    public static boolean BIOMECONTROL = true;
 
     public MineFrame() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
@@ -40,7 +35,9 @@ public class MineFrame {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-
+        event.enqueueWork(()->{
+            ModBiomeGen.generateBiomes();
+        });
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {

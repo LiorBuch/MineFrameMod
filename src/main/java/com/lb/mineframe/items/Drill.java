@@ -1,22 +1,21 @@
 package com.lb.mineframe.items;
 
 import com.lb.mineframe.MineFrame;
-import com.lb.mineframe.renderers.ChainsawRenderer;
-import com.lb.mineframe.renderers.ClipCrossbowRenderer;
-import com.lb.mineframe.renderers.models.ChainsawModel;
+import com.lb.mineframe.renderers.DrillRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.OreBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.network.PacketDistributor;
@@ -34,13 +33,12 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class Chainsaw extends AxeItem implements IAnimatable, ISyncable {
-    //Animation utils
-    private final String animationControllerName = "controllerchainsaw";
+public class Drill extends PickaxeItem implements IAnimatable, ISyncable {
+    private final String animationControllerName = "controllerdrill";
     public AnimationFactory factory = new AnimationFactory(this);
-    private final int animationCutState = 1;
+    private final int animationDrillState = 1;
 
-    public Chainsaw(Tier pTier, float pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
+    public Drill(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
         GeckoLibNetwork.registerSyncable(this);
     }
@@ -49,7 +47,7 @@ public class Chainsaw extends AxeItem implements IAnimatable, ISyncable {
     public void initializeClient(Consumer<IItemRenderProperties> consumer) {
         super.initializeClient(consumer);
         consumer.accept(new IItemRenderProperties() {
-            private final BlockEntityWithoutLevelRenderer renderer = new ChainsawRenderer();
+            private final BlockEntityWithoutLevelRenderer renderer = new DrillRenderer();
 
             @Override
             public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
@@ -59,72 +57,84 @@ public class Chainsaw extends AxeItem implements IAnimatable, ISyncable {
     }
 
     @Override
+    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
+        super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
+        if (!pLevel.isClientSide) {
+            final int id = GeckoLibUtil.guaranteeIDForStack(pStack, (ServerLevel) pLevel); //specify ID for the item.
+            final PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> pEntity);
+            GeckoLibNetwork.syncAnimation(target, this, id, animationDrillState);
+            if (!pLevel.isClientSide()) {
+                for (int i = 0; i < 3; i++) {
+                    pLevel.addParticle(ParticleTypes.FLAME, pEntity.getX(), pEntity.getY() , pEntity.getZ(), 0d, 0.05d, 0d);
+                }
+            }
+        }
+    }
+
+    @Override
     public void onUseTick(Level pLevel, LivingEntity pLivingEntity, ItemStack pStack, int pRemainingUseDuration) {
         super.onUseTick(pLevel, pLivingEntity, pStack, pRemainingUseDuration);
 
     }
 
     @Override
-    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
-        super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
-        if (!pLevel.isClientSide) {
-            final int id = GeckoLibUtil.guaranteeIDForStack(pStack, (ServerLevel) pLevel); //specify ID for the item.
-            final PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> pEntity);
-            GeckoLibNetwork.syncAnimation(target, this, id, animationCutState);
-        }
-    }
-
-    @Override
     public boolean mineBlock(ItemStack pStack, Level pLevel, BlockState pState, BlockPos pPos, LivingEntity pEntityLiving) {
-        if (pLevel.getBlockState(pPos).is(BlockTags.LOGS)) {
-            isNeighborWood(pPos, pLevel, 100);
+        if (!(pState.getBlock().equals(Blocks.STONE))&& pState.getBlock() instanceof OreBlock) {
+            isNeighborOre(pPos, pLevel, 20,pState);
             return true;
         }
         return super.mineBlock(pStack, pLevel, pState, pPos, pEntityLiving);
     }
 
-    public void isNeighborWood(BlockPos blockPos, Level level, int allowedCuts) {
+    public void isNeighborOre(BlockPos blockPos, Level level, int allowedBreaks,BlockState typeOfOre) {
         int x = blockPos.getX();
         int y = blockPos.getY();
         int z = blockPos.getZ();
-        int cutsRemaining = allowedCuts;
-        if (allowedCuts != 0) {
-            if (level.getBlockState(new BlockPos(x + 1, y, z)).is(BlockTags.LOGS)) {
+        int breaksRemaining = allowedBreaks;
+        if (allowedBreaks != 0) {
+            if (level.getBlockState(new BlockPos(x + 1, y, z)).getBlock() == typeOfOre.getBlock()) {
                 level.destroyBlock(new BlockPos(x + 1, y, z), true);
-                cutsRemaining--;
-                isNeighborWood(new BlockPos(x + 1, y, z), level, cutsRemaining);
+                breaksRemaining--;
+                isNeighborOre(new BlockPos(x + 1, y, z), level, breaksRemaining,typeOfOre);
             }
-            if (level.getBlockState(new BlockPos(x - 1, y, z)).is(BlockTags.LOGS)) {
+            if (level.getBlockState(new BlockPos(x - 1, y, z)).getBlock() == typeOfOre.getBlock()) {
                 level.destroyBlock(new BlockPos(x - 1, y, z), true);
-                cutsRemaining--;
-                isNeighborWood(new BlockPos(x - 1, y, z), level, cutsRemaining);
+                breaksRemaining--;
+                isNeighborOre(new BlockPos(x - 1, y, z), level, breaksRemaining,typeOfOre);
             }
-            if (level.getBlockState(new BlockPos(x, y + 1, z)).is(BlockTags.LOGS)) {
+            if (level.getBlockState(new BlockPos(x, y + 1, z)).getBlock() == typeOfOre.getBlock()) {
                 level.destroyBlock(new BlockPos(x, y + 1, z), true);
-                cutsRemaining--;
-                isNeighborWood(new BlockPos(x, y + 1, z), level, cutsRemaining);
+                breaksRemaining--;
+                isNeighborOre(new BlockPos(x, y + 1, z), level, breaksRemaining,typeOfOre);
             }
-            if (level.getBlockState(new BlockPos(x, y, z + 1)).is(BlockTags.LOGS)) {
+            if (level.getBlockState(new BlockPos(x, y, z + 1)).getBlock() == typeOfOre.getBlock()) {
                 level.destroyBlock(new BlockPos(x, y, z + 1), true);
-                cutsRemaining--;
-                isNeighborWood(new BlockPos(x, y, z + 1), level, cutsRemaining);
+                breaksRemaining--;
+                isNeighborOre(new BlockPos(x, y, z + 1), level, breaksRemaining,typeOfOre);
             }
-            if (level.getBlockState(new BlockPos(x, y, z - 1)).is(BlockTags.LOGS)) {
+            if (level.getBlockState(new BlockPos(x, y, z - 1)).getBlock() == typeOfOre.getBlock()) {
                 level.destroyBlock(new BlockPos(x, y, z - 1), true);
-                cutsRemaining--;
-                isNeighborWood(new BlockPos(x, y, z - 1), level, cutsRemaining);
+                breaksRemaining--;
+                isNeighborOre(new BlockPos(x, y, z - 1), level, breaksRemaining,typeOfOre);
+            }
+            if (level.getBlockState(new BlockPos(x, y-1, z)).getBlock() == typeOfOre.getBlock()) {
+                level.destroyBlock(new BlockPos(x, y-1, z - 1), true);
+                breaksRemaining--;
+                isNeighborOre(new BlockPos(x, y-1, z), level, breaksRemaining,typeOfOre);
             }
         }
     }
 
+
+
     //ANIMATION CONTROLLING
     @Override
     public void onAnimationSync(int id, int state) {
-        if (state == animationCutState) {
+        if (state == animationDrillState) {
             final AnimationController controller = GeckoLibUtil.getControllerForID(this.factory, id, animationControllerName);
             if (controller.getAnimationState() == AnimationState.Stopped) {
                 controller.markNeedsReload();
-                controller.setAnimation(new AnimationBuilder().addAnimation("animation.chainsaw.work", false));
+                controller.setAnimation(new AnimationBuilder().addAnimation("animation.drill.use", false));
             }
         }
     }

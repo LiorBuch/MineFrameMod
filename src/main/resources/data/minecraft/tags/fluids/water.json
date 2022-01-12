@@ -1,0 +1,8 @@
+
+{
+  "replace": false,
+  "values": [
+    "mineframe:oil_flowing",
+    "mineframe:oil_fluid"
+  ]
+}

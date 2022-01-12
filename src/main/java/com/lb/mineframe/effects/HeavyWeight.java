@@ -18,7 +18,6 @@ public class HeavyWeight extends MobEffect {
     public void applyEffectTick(LivingEntity livingEntity, int level) {
         if (livingEntity instanceof FlyingMob flyingMob) {
             if (flyingMob.hasEffect(Registrations.HEAVY_WEIGHT.get())) {
-                MineFrame.LOGGER.info("taking the mob down");
                 Vec3 forceDownVector = new Vec3(flyingMob.getDeltaMovement().x, -0.5D, flyingMob.getDeltaMovement().z);
                 flyingMob.setDeltaMovement(forceDownVector);
             }
