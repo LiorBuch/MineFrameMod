@@ -1,6 +1,8 @@
 package com.stargazer.mineframe;
 
 import com.stargazer.mineframe.setups.Registrations;
+import com.stargazer.mineframe.world.biome.MFBiomeProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -16,6 +18,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
+import terrablender.api.BiomeProviders;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("mineframe")
@@ -31,11 +34,11 @@ public class MineFrame {
         MinecraftForge.EVENT_BUS.register(this);
         Registrations.init();
         GeckoLib.initialize();
-
     }
 
     private void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(()->{
+            BiomeProviders.register(new MFBiomeProvider(new ResourceLocation(MODID,"dark_sea"),20));
         });
     }
 

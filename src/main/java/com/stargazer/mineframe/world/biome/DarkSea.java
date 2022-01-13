@@ -9,9 +9,6 @@ public class DarkSea {
     public static Biome darkSea(){
         MobSpawnSettings.Builder spawnSettings = new MobSpawnSettings.Builder();
         BiomeGenerationSettings.Builder generationSettings = new BiomeGenerationSettings.Builder();
-        //MineFrameBiomeDefaultFeatures.addGrass(generationSettings);
-        //MineFrameBiomeDefaultFeatures.addBYGMushrooms(generationSettings);
-        //MineFrameBiomeDefaultFeatures.addSparseRedOakForestTrees(generationSettings);
         BiomeDefaultFeatures.addDefaultCarversAndLakes(generationSettings);
         BiomeDefaultFeatures.addDefaultMonsterRoom(generationSettings);
         BiomeDefaultFeatures.addDefaultUndergroundVariety(generationSettings);
