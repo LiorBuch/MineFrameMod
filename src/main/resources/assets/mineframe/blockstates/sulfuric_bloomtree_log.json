@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "mineframe:block/sulfuric_bloomtree_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "mineframe:block/sulfuric_bloomtree_log"
+    },
+    "axis=z": {
+      "model": "mineframe:block/sulfuric_bloomtree_log_horizontal",
+      "x": 90
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "mineframe:blocks/sulfuric_bloomtree_sapling"
+  }
+}

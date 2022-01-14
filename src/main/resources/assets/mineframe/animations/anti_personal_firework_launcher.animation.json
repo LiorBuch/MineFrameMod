@@ -1,0 +1,112 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.anti_personal_firework_launcher.reload": {
+			"animation_length": 4.6,
+			"bones": {
+				"body": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.28": {
+							"vector": [60, 0, 0],
+							"easing": "easeOutQuad"
+						},
+						"3.52": {
+							"vector": [60, 0, 0]
+						},
+						"4.28": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutQuart"
+						}
+					}
+				},
+				"loading_hatch": {
+					"rotation": {
+						"1.28": {
+							"vector": [0, 0, 0]
+						},
+						"1.88": {
+							"vector": [-85, 0, 0],
+							"easing": "easeInBounce",
+							"easingArgs": [0.3]
+						},
+						"2.52": {
+							"vector": [-85, 0, 0]
+						},
+						"3.36": {
+							"vector": [0, 0, 0],
+							"easing": "easeOutCirc"
+						}
+					},
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"firework": {
+					"position": {
+						"1.72": {
+							"vector": [0, 0, 0]
+						},
+						"1.76": {
+							"vector": [0, -8, 4]
+						},
+						"2.12": {
+							"vector": [0, -5, 0]
+						},
+						"2.44": {
+							"vector": [0, -1, 0]
+						}
+					}
+				}
+			}
+		},
+		"animation.anti_personal_firework_launcher.fire": {
+			"animation_length": 0.64,
+			"bones": {
+				"body": {
+					"rotation": {
+						"0.12": {
+							"vector": [0, 0, 0]
+						},
+						"0.36": {
+							"vector": [-15, 0, 0],
+							"easing": "easeInBack"
+						},
+						"0.64": {
+							"vector": [0, 0, 0],
+							"easing": "easeInElastic"
+						}
+					},
+					"position": {
+						"0.12": {
+							"vector": [0, 0, 0]
+						},
+						"0.36": {
+							"vector": [0, 0, 1],
+							"easing": "easeInBack"
+						},
+						"0.64": {
+							"vector": [0, 0, 0],
+							"easing": "easeInElastic"
+						}
+					}
+				},
+				"firework": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.08": {
+							"vector": [0, 0, -17]
+						},
+						"0.12": {
+							"vector": [0, 0, 3]
+						}
+					}
+				}
+			}
+		}
+	}
+}

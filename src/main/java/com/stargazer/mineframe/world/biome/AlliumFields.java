@@ -9,9 +9,6 @@ public class AlliumFields{
     public static Biome alliumFields() {
         MobSpawnSettings.Builder spawnSettings = new MobSpawnSettings.Builder();
         BiomeGenerationSettings.Builder generationSettings = new BiomeGenerationSettings.Builder();
-        //MineFrameBiomeDefaultFeatures.addGrass(generationSettings);
-        //MineFrameBiomeDefaultFeatures.addBYGMushrooms(generationSettings);
-        //MineFrameBiomeDefaultFeatures.addSparseRedOakForestTrees(generationSettings);
         BiomeDefaultFeatures.addDefaultCarversAndLakes(generationSettings);
         BiomeDefaultFeatures.addDefaultMonsterRoom(generationSettings);
         BiomeDefaultFeatures.addDefaultUndergroundVariety(generationSettings);
@@ -20,8 +17,6 @@ public class AlliumFields{
         BiomeDefaultFeatures.addDefaultMushrooms(generationSettings);
         BiomeDefaultFeatures.addSurfaceFreezing(generationSettings);
         BiomeDefaultFeatures.addDefaultFlowers(generationSettings);
-        BiomeDefaultFeatures.
-        //MineFrameBiomeDefaultFeatures.addBeeHive(generationSettings);
 
         spawnSettings.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 12, 4, 4));
         spawnSettings.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PIG, 10, 4, 4));

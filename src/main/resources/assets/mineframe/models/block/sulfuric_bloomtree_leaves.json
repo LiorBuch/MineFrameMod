@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/leaves",
+  "textures": {
+    "all": "mineframe:blocks/sulfuric_bloomtree_leaves"
+  }
+}

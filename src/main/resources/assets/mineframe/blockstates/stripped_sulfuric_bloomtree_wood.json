@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "mineframe:block/stripped_sulfuric_bloomtree_wood",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "mineframe:block/stripped_sulfuric_bloomtree_wood"
+    },
+    "axis=z": {
+      "model": "mineframe:block/stripped_sulfuric_bloomtree_wood",
+      "x": 90
+    }
+  }
+}

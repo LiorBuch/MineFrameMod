@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "mineframe:blocks/sulfuric_bloomtree_log_top",
+    "side": "mineframe:blocks/sulfuric_bloomtree_log"
+  }
+}

@@ -1,8 +1,9 @@
 package com.stargazer.mineframe.items;
 
-import com.stargazer.mineframe.MineFrame;
 import com.stargazer.mineframe.entities.thrown.HomingFireworkProjectile;
+import com.stargazer.mineframe.entities.thrown.PersonalHomingFirework;
 import com.stargazer.mineframe.renderers.AntiAirFireworkLauncherRenderer;
+import com.stargazer.mineframe.renderers.AntiPersonalFireworkLauncherRenderer;
 import com.stargazer.mineframe.utils.KeyMaps;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
@@ -40,23 +41,21 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class AntiAirFireworkLauncher extends Item implements IAnimatable, ISyncable {
+public class AntiPersonalFireworkLauncher extends Item implements IAnimatable, ISyncable {
 
-    //animation util
-    private final String animationControllerName = "controlleraalauncher";
+    private final String animationControllerName = "controllerpersonallauncher";
     public AnimationFactory factory = new AnimationFactory(this);
     private final int animationReloadState = 0;
 
-    public AntiAirFireworkLauncher(Properties pProperties) {
+    public AntiPersonalFireworkLauncher(Properties pProperties) {
         super(pProperties);
-        GeckoLibNetwork.registerSyncable(this);
     }
 
     @Override
     public void initializeClient(Consumer<IItemRenderProperties> consumer) {
         super.initializeClient(consumer);
         consumer.accept(new IItemRenderProperties() {
-            private final BlockEntityWithoutLevelRenderer renderer = new AntiAirFireworkLauncherRenderer();
+            private final BlockEntityWithoutLevelRenderer renderer = new AntiPersonalFireworkLauncherRenderer();
 
             @Override
             public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
@@ -82,7 +81,7 @@ public class AntiAirFireworkLauncher extends Item implements IAnimatable, ISynca
         super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
         Player player = (Player) pEntity;
         if (KeyMaps.reload_key.isDown() && !pLevel.isClientSide && !player.getCooldowns().isOnCooldown(this)&&pIsSelected) {
-            player.getCooldowns().addCooldown(this, 111);
+            player.getCooldowns().addCooldown(this, 96);
             final int id = GeckoLibUtil.guaranteeIDForStack(pStack, (ServerLevel) pLevel); //specify ID for the item.
             final PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> pEntity);
             GeckoLibNetwork.syncAnimation(target, this, id, animationReloadState);
@@ -96,7 +95,7 @@ public class AntiAirFireworkLauncher extends Item implements IAnimatable, ISynca
         int targetID = itemParaTag.getInt("target_id");
         Entity entity = pLevel.getEntity(targetID);
         if (entity != null) {
-            HomingFireworkProjectile homingFireworkProjectile = new HomingFireworkProjectile(pLevel,pLivingEntity.getX(), pLivingEntity.getY()+0.4, pLivingEntity.getZ(), createFireworkRocket(),targetID);
+            PersonalHomingFirework homingFireworkProjectile = new PersonalHomingFirework(pLevel,pLivingEntity.getX(), pLivingEntity.getY()+1.3, pLivingEntity.getZ(), createFireworkRocket(),targetID);
             homingFireworkProjectile.shootFromRotation(pLivingEntity, pLivingEntity.getXRot(), pLivingEntity.getYRot(), 0.0F, 1.0F, 0.0F);
             pLevel.addFreshEntity(homingFireworkProjectile);
             itemParaTag.putInt("target_id", -1);
@@ -110,10 +109,10 @@ public class AntiAirFireworkLauncher extends Item implements IAnimatable, ISynca
         ListTag explosionListTag = new ListTag();
         CompoundTag explosionTag = new CompoundTag();
 
-        explosionTag.putIntArray("Colors", new int[]{0xeb3434});
+        explosionTag.putIntArray("Colors", new int[]{0x17165e});
         explosionTag.putByte("Flicker", (byte) 0);
         explosionTag.putByte("Trail", (byte) 0);
-        explosionTag.putByte("Type", (byte) 1);
+        explosionTag.putByte("Type", (byte) 0);
 
         explosionListTag.add(explosionTag);
 
@@ -201,9 +200,8 @@ public class AntiAirFireworkLauncher extends Item implements IAnimatable, ISynca
             final AnimationController controller = GeckoLibUtil.getControllerForID(this.factory, id, animationControllerName);
             if (controller.getAnimationState() == AnimationState.Stopped) {
                 controller.markNeedsReload();
-                controller.setAnimation(new AnimationBuilder().addAnimation("animation.anti_air_firework_launcher.reload", false));
+                controller.setAnimation(new AnimationBuilder().addAnimation("animation.anti_personal_firework_launcher.reload", false));
             }
         }
     }
-
 }

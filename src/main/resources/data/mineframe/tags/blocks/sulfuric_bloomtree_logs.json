@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "mineframe:sulfuric_bloomtree_log",
+    "mineframe:sulfuric_bloomtree_wood",
+    "mineframe:stripped_sulfuric_bloomtree_log",
+    "mineframe:stripped_sulfuric_bloomtree_wood"
+  ]
+}
